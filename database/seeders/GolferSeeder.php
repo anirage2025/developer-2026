@@ -9,13 +9,16 @@ class GolferSeeder extends Seeder
 {
     public function run(): void
     {
-        $counter = 1;
+        $start = Golfer::max('debitor_account') ?? 0;
+        $counter = $start + 1;
 
         Golfer::factory()
             ->count(100)
-            ->sequence(fn () => [
-                'debitor_account' => $counter++,
-            ])
+            ->sequence(function () use (&$counter) {
+                return [
+                    'debitor_account' => $counter++,
+                ];
+            })
             ->create();
     }
 }
